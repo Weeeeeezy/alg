@@ -1,0 +1,44 @@
+<server>
+  <application-settings location="*">
+    <!-- ================================================================== -->
+    <!-- Session Mgmt:                                                      -->
+    <!-- ================================================================== -->
+    <session-management>
+      <shared-process><num-processes>1</num-processes></shared-process>
+      <tracking>URL</tracking>
+      <reload-is-new-session>false</reload-is-new-session>
+      <timeout>86400</timeout>
+      <server-push-timeout>600</server-push-timeout>    <!-- Do we need it? -->
+    </session-management>
+    <!-- ================================================================== -->
+    <!-- General Appl Settings:                                             -->
+    <!-- ================================================================== -->
+    <debug>false</debug>
+    <log-file>/opt/MAQUETTE/log/MM-Single/WT-MM-Single.log</log-file>
+    <web-sockets>true</web-sockets>
+    <max-request-size>64</max-request-size>
+    <session-id-length>8</session-id-length>
+    <plain-ajax-sessions-ratio-limit>1</plain-ajax-sessions-ratio-limit>
+    <ajax-puzzle>false</ajax-puzzle>
+    <webgl-detection>false</webgl-detection>
+    <behind-reverse-proxy>false</behind-reverse-proxy>
+    <strict-event-serialization>false</strict-event-serialization>
+    <inline-css>true</inline-css>
+    <indicator-timeout>500</indicator-timeout>
+    <double-click-timeout>200</double-click-timeout>
+    <progressive-bootstrap>true</progressive-bootstrap>
+    <session-id-cookie>false</session-id-cookie>
+    <cookie-checks>false</cookie-checks>
+    <!-- ================================================================== -->
+    <!-- Run-Time Properties:                                               -->
+    <!-- ================================================================== -->
+    <!-- NB: An absolute baseURL is not specified -->
+    <properties>
+      <property name="resourcesURL">resources/</property>
+      <property name="extBaseURL">ext/</property>
+      <!-- The rest are our own proprties:  -->
+      <property
+        name="strategyINI">/opt/MAQUETTE/share/MM-Single.ini</property>
+    </properties>
+  </application-settings>
+</server>

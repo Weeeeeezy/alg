@@ -1,0 +1,1 @@
+../Tools/MkSecDefs-LATOKEN.sql

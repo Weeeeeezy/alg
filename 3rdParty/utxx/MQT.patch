@@ -1,0 +1,81 @@
+diff --git a/3rdParty/utxx/detail/enum_helper.hpp b/3rdParty/utxx/detail/enum_helper.hpp
+index cb83a263..32479d60 100644
+--- a/3rdParty/utxx/detail/enum_helper.hpp
++++ b/3rdParty/utxx/detail/enum_helper.hpp
+@@ -120,7 +120,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ #   include <boost/serialization/access.hpp>
+ 
+ #   define UTXX__ENUM_FRIEND_SERIALIZATION__ \
+-    friend class boost::serialization::access
++    friend class boost::serialization::access;
+ # endif
+ #else
+ # ifndef UTXX__ENUM_FRIEND_SERIALIZATION__
+diff --git a/3rdParty/utxx/enum.hpp b/3rdParty/utxx/enum.hpp
+index 8398e209..d3588a61 100644
+--- a/3rdParty/utxx/enum.hpp
++++ b/3rdParty/utxx/enum.hpp
+@@ -265,7 +265,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+             return names()[m];                                                 \
+         }                                                                      \
+                                                                                \
+-        UTXX__ENUM_FRIEND_SERIALIZATION__;                                     \
++        UTXX__ENUM_FRIEND_SERIALIZATION__                                      \
+                                                                                \
+         type m_val;                                                            \
+     }
+diff --git a/3rdParty/utxx/enumu.hpp b/3rdParty/utxx/enumu.hpp
+index 4167f281..fb0dee37 100644
+--- a/3rdParty/utxx/enumu.hpp
++++ b/3rdParty/utxx/enumu.hpp
+@@ -53,7 +53,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ #   include <boost/serialization/access.hpp>
+ 
+ #   define UTXX__ENUM_FRIEND_SERIALIZATION__ \
+-    friend class boost::serialization::access
++    friend class boost::serialization::access;
+ # endif
+ #else
+ # ifndef UTXX__ENUM_FRIEND_SERIALIZATION__
+@@ -275,7 +275,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+             }                                                                  \
+         }                                                                      \
+                                                                                \
+-        UTXX__ENUM_FRIEND_SERIALIZATION__;                                     \
++        UTXX__ENUM_FRIEND_SERIALIZATION__                                      \
+                                                                                \
+         type m_val;                                                            \
+     }
+diff --git a/3rdParty/utxx/enumv.hpp b/3rdParty/utxx/enumv.hpp
+index cfac5243..2cdb8eaf 100644
+--- a/3rdParty/utxx/enumv.hpp
++++ b/3rdParty/utxx/enumv.hpp
+@@ -53,7 +53,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ #   include <boost/serialization/access.hpp>
+ 
+ #   define UTXX__ENUM_FRIEND_SERIALIZATION__ \
+-    friend class boost::serialization::access
++    friend class boost::serialization::access;
+ # endif
+ #else
+ # ifndef UTXX__ENUM_FRIEND_SERIALIZATION__
+@@ -283,7 +283,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+             return (it == metas().end() ? null_pair() : *it).second;           \
+         }                                                                      \
+                                                                                \
+-        UTXX__ENUM_FRIEND_SERIALIZATION__;                                     \
++        UTXX__ENUM_FRIEND_SERIALIZATION__                                      \
+                                                                                \
+         type m_val;                                                            \
+     }
+diff --git a/3rdParty/utxx/error.cpp b/3rdParty/utxx/error.cpp
+index cf3cfcb3..7b00c5ea 100644
+--- a/3rdParty/utxx/error.cpp
++++ b/3rdParty/utxx/error.cpp
+@@ -36,4 +36,4 @@ namespace utxx {
+     /// Controls src_info printing defaults
+     int src_info_defaults::s_print_fun_scopes = def_print_scopes();
+ 
+-} // namespace utxx
+\ No newline at end of file
++} // namespace utxx

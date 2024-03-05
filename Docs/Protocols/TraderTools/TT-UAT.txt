@@ -1,0 +1,20 @@
+FIX Details:
+
+ 
+Market Data
+Orders session
+Target IP
+212.118.233.228
+212.118.233.228
+Port
+50000
+51000
+Sender Comp ID
+FIXUAT2-MD
+FIXUAT2-ORD
+Target Comp ID
+TTUAT-MD
+TTUAT-ORD
+Account (Tag1): ALFCM_UAT
+
+Party ID: ALFCM_UAT

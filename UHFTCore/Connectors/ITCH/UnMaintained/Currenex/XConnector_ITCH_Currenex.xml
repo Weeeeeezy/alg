@@ -1,0 +1,22 @@
+<!--
+  vim:ts=2:et:sw=2
+
+  Configuration validation framework test case input for config_validator.xsl
+
+  Author:  Serge Aleynikov <saleyn@gmail.com>
+  Created: 2014-07-14
+-->
+
+<config namespace="CFG" name="ITCH_Currenex" alias="itch-currenex">
+  <option name="raw-msg-logger-type" type="string" default=""
+          desc="Indicates the type of log recorder used for recording raw\n
+                market data. The types are listed in the 'data-loggers'\n
+                section. (Default: '' - no recording)"/>
+
+  <option name="auto-subscribe" type="bool" default="true"
+          desc="When enabled, connector will subscribe to all instruments\n
+                (or selected instruments) upon startup"/>
+
+  <include file="MsgBuilder.xml"/>
+  <include file="XConnector_MktData.xml"/>
+</config>

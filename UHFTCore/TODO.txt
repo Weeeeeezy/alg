@@ -1,0 +1,66 @@
+[For Yesterday/Today/Tomorrow]
+
+Re-implement BT, remove BT_VIRTUAL
+UseBusyWait  by config option even if not necessary
+Req12 state update by EConnector_OrdMgmt, not Bottom Halves?
+
+Sparse OrderBook optimization
+Fix large SnapShots in H2WS MDC
+Multiple (Primary/Seconary) MDCs
+VWAP MDC Subscription Mode
+Cancel-on-Disconnect
+[mostly done] Logging Headers in H2 (add Continuation frame headers)
+[done] Graceful top-level OMC ReStart
+[done] Spot/Margin/Futures segments in Binance
+[done] Crypto-Profile to avoid full rebuild
+[done] RateLimit error and Unprocessed error in Binance OMC
+[done] Port H2WS MDC to H2Connector
+
+Integrate MM Simulator
+
+[Top-Most Priority]
+
+Combined OrderBook (fixed step for "close" entries, map for "far-away" ones,
+                    maybe optimization for SnapShots)
+CONTINUOUS PRICE PREDICTOR !!!
+MDC Aggregator
+Dynamic CurrDate update when the date changes (maybe via a generic FiringTimer)
+
+[High Priority]
+
+Native (non-virtual, simplified) {New/Cancel/Modify}Order methods on OMCs
+Complete the FIX Acceptor
+FIX StreamingQuotes/RFS/RFQ
+Transaction Costs and IMs in RiskMgr
+Generic Strategy Building Blocks (in particular PassiveQuote class)
+Replace spdlog by NanoLogger
+iTraxx CDX
+
+[Medium-High Priority]
+
+Reconnect on LibVMA (and any TCP) disconnects w/o notifying the Strategy,
+  soft notification to Strategy
+RiskMgr: AggrFlag, ProspPos, PxLimits, Futures accounting?
+
+[Medium Priority]
+
+Factor out VWAP into QuantSupport (incl FullAmount)
+Signals replacement for LibVMA
+
+Refactor Pairs-MF (for now, poor use of Qty<>)
+Multiple pairs in Pairs-MF do not work?
+OverHedging in Pairs-MF
+Install Valuators in Pairs-MF
+Order of Re-Quoting in Pairs-MF -- which side do 1st?
+
+[Alfa -- NoLongerRelevant]
+
+Complete P2CGate
+Merge of multiple P2CGate MD streams
+Merge of 2 FAST MICEX Channel Pairs
+FastMatch ITCH and OUCH
+Futures to OPICS
+FIX:   EBS support & s_hasReSend mgmt
+Do not quit on OrderBook errors?
+Proper Enums/Modes in Pairs-MF ?
+Risk Transfer Instruments and Unified Limits in RiskMgr?

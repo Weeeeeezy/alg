@@ -1,0 +1,31 @@
+diff --git a/UHFT/Connectors/EConnector_MktData.hpp b/UHFT/Connectors/EConnector_MktData.hpp
+index 75b1b022..dc652448 100644
+--- a/UHFT/Connectors/EConnector_MktData.hpp
++++ b/UHFT/Connectors/EConnector_MktData.hpp
+@@ -506,7 +506,7 @@ namespace MAQUETTE
+         a_ts_recv
+       );
+
+-      for (OrderBook::SubscrInfo const& sj: a_obp.GetSubscrs())
++      for (OrderBook::StratSubscrInfo const& sj: a_obp.GetSubscrs())
+       {
+         Strategy* strat = sj.m_strategy;
+         assert(strat != nullptr);
+@@ -515,7 +515,7 @@ namespace MAQUETTE
+     }
+     else
+       // Use the existing "Trade" obj pointed to by "trPtr":
+-      for (OrderBook::SubscrInfo const& sj: a_obp.GetSubscrs())
++      for (OrderBook::StratSubscrInfo const& sj: a_obp.GetSubscrs())
+       {
+         Strategy* strat = sj.m_strategy;
+         assert(strat != nullptr);
+@@ -1631,7 +1631,7 @@ namespace MAQUETTE
+       // NB: Extra checks before Strategy Call-Backs can be invoked:
+       if (utxx::likely
+          (ob->IsInitialised()   && res != OrderBook::UpdateEffectT::NONE))
+-        for (OrderBook::SubscrInfo const& sj: ob->GetSubscrs())
++        for (OrderBook::StratSubscrInfo const& sj: ob->GetSubscrs())
+         {
+           // Get the curr TimeStamp -- it will also be passed as "stratTS" to
+           // the Strategy (if notified at all):

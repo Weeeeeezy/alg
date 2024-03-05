@@ -1,0 +1,21 @@
+<!--
+  vim:ts=2:et:sw=2
+
+  Configuration validation framework test case input for config_validator.xsl
+
+  Author:  Serge Aleynikov <saleyn@gmail.com>
+  Created: 2014-07-14
+-->
+
+<config namespace="CFG" name="OUCH_Currenex" alias="ouch-currenex">
+  <option name="position-req-sec" type="int" default="0"
+          desc="Position/margin request interval in seconds (0 - no requests)."/>
+
+  <option name="raw-msg-logger-type" type="string" default=""
+          desc="Indicates the type of log recorder used for recording raw\n
+                market data. The types are listed in the 'data-loggers'\n
+                section. (Default: '' - no recording)"/>
+
+  <include file="MsgBuilder.xml"/>
+  <include file="XConnector_OrderMgmt.xml"/>
+</config>

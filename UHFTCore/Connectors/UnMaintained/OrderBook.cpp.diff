@@ -1,0 +1,81 @@
+diff --git a/UHFT/Connectors/OrderBook.cpp b/UHFT/Connectors/OrderBook.cpp
+index 6b5e4e13..be84d1d0 100644
+--- a/UHFT/Connectors/OrderBook.cpp
++++ b/UHFT/Connectors/OrderBook.cpp
+@@ -23,9 +23,6 @@ namespace MAQUETTE
+   OrderBook::OrderBook ()
+   : m_mdc              (nullptr),
+     m_instr            (nullptr),
+-    m_subscrProtoAction(),
+-    m_isProtoSubscrd   (false),
+-    m_protoSubscrID    (0),
+     m_isFullAmt        (false),
+     m_withFracQtys     (false),
+     m_withSeqNums      (false),
+@@ -61,9 +58,6 @@ namespace MAQUETTE
+   OrderBook::OrderBook (OrderBook&& a_right)
+   : m_mdc              (a_right.m_mdc),
+     m_instr            (a_right.m_instr),
+-    m_subscrProtoAction(a_right.m_subscrProtoAction),
+-    m_isProtoSubscrd   (a_right.m_isProtoSubscrd),
+-    m_protoSubscrID    (a_right.m_protoSubscrID),
+     m_isFullAmt        (a_right.m_isFullAmt),
+     m_withFracQtys     (a_right.m_withFracQtys),
+     m_withSeqNums      (a_right.m_withSeqNums),
+@@ -114,9 +108,6 @@ namespace MAQUETTE
+   )
+   : m_mdc              (a_mdc),
+     m_instr            (a_instr),
+-    m_subscrProtoAction(),                // Normally not known yet
+-    m_isProtoSubscrd   (false),           // Not subscribed yet
+-    m_protoSubscrID    (0),               // Not known yet
+     m_isFullAmt        (a_is_full_amt),
+     m_withFracQtys     (a_with_frac_qtys),
+     m_withSeqNums      (a_with_seq_nums),
+@@ -1364,7 +1355,7 @@ namespace MAQUETTE
+     //-----------------------------------------------------------------------//
+     bool amended = false;
+
+-    for (SubscrInfo& si: m_subscrs)
++    for (StratSubscrInfo& si: m_subscrs)
+       if (utxx::unlikely(si.m_strategy == a_strat))
+       {
+         // Yes, it is already there -- but we may need to AMEND it; all flds
+@@ -1375,7 +1366,7 @@ namespace MAQUETTE
+       }
+
+     //-----------------------------------------------------------------------//
+-    // Generic case: Nothing to amend, will install a new "SubscrInfo":      //
++    // Generic case: Nothing to amend, will install a new "StratSubscrInfo": //
+     //-----------------------------------------------------------------------//
+     if (utxx::likely(!amended))
+     {
+@@ -1389,15 +1380,15 @@ namespace MAQUETTE
+               ("OrderBook::AddSubscr: ", m_instr->m_FullName.data(),
+                ": Too Many Strategies");
+
+-      // SORT all "SubscrInfo"s in the ASCENDING order of MinLevels:  This is
+-      // for optimal search  of  applicable Call-Backs  after an OrderBook is
+-      // updated: for an Event level E*, the "left-most" Strategies with Min-
++      // SORT all "StratSubscrInfo"s in the ASCENDING order of MinLevels: This
++      // is for optimal search of applicable Call-Backs  after an OrderBook is
++      // updated: for an Event level E*, the "left-most" Strategies with  Min-
+       // Levels L <= E* will need to be notified:
+       sort
+       (
+         m_subscrs.begin(),
+         m_subscrs.end(),
+-        [](SubscrInfo const& a_left,  SubscrInfo const& a_right)->bool
++        [](StratSubscrInfo const& a_left, StratSubscrInfo const& a_right)->bool
+           { return a_left.m_minCBLevel < a_right.m_minCBLevel; }
+       );
+     }
+@@ -1415,7 +1406,7 @@ namespace MAQUETTE
+
+     auto it = find_if
+               (m_subscrs.begin(), m_subscrs.end(),
+-              [a_strat](SubscrInfo const& a_curr)->bool
++              [a_strat](StratSubscrInfo const& a_curr)->bool
+               { return (a_curr.m_strategy == a_strat); });
+
+     if (utxx::likely(it != m_subscrs.end()))

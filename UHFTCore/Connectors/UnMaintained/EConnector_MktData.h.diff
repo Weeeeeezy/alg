@@ -1,0 +1,77 @@
+diff --git a/UHFT/Connectors/EConnector_MktData.h b/UHFT/Connectors/EConnector_MktData.h
+index 61d137cb..64764183 100644
+--- a/UHFT/Connectors/EConnector_MktData.h
++++ b/UHFT/Connectors/EConnector_MktData.h
+@@ -37,6 +37,32 @@ namespace MAQUETTE
+     using LatencyStats = HistoGram<20>;
+
+   protected:
++    //=======================================================================//
++    // "ProtoSubscrInfo" Struct:                                             //
++    //=======================================================================//
++    // Contains data related to a particular Protocol-Level Subscription for
++    // a given Instrument. Typically used for TCP-based MDCs only; UDP-based
++    // ones receive MktData by multicast w/o any explicit subscriptions:
++    //
++    struct ProtoSubscrInfo
++    {
++      //---------------------------------------------------------------------//
++      // Data Flds:                                                          //
++      //---------------------------------------------------------------------//
++      std::function<OrderID()> m_subscrProtoAction;
++      bool                     m_isProtoSubscrd;   // Subscr active at Proto lvl
++      OrderID                  m_protoSubscrID;    // May be 0 even if subscrd
++
++      //---------------------------------------------------------------------//
++      // Default Ctor:                                                       //
++      //---------------------------------------------------------------------//
++      ProtoSubscrInfo()
++      : m_subscrProtoAction   (),
++        m_isProtoSubscrd      (false),
++        m_protoSubscrID       (0)
++      {}
++    };
++
+     //=======================================================================//
+     // "OBUpdateInfo" Struct:                                                //
+     //=======================================================================//
+@@ -84,6 +110,12 @@ namespace MAQUETTE
+     // NULL (points to the actual Primary which owns Orders and OrderBooks):
+     EConnector_MktData* const m_primaryMDC;
+
++    // XXX: We currently do NOT maintain the inverse map (a list of Secondary
++    // MDCs for this Primary). This means that the Primary MDC is not a "mas-
++    // ter" and the Secondary ones are not "slaves". In particular, all MDCs
++    // are Started / Stopped  separately by an external application; Primary
++    // MDC does not Start or Stop Secondaries...
++
+     // "OrderBook" objs for all configured Symbols (with Subscriptions). NB: do
+     // NOT use std::vector here, because we export ptrs to OrderBooks created,
+     // and the latter may be re-allocated when std::vector enlarges!
+@@ -91,6 +123,16 @@ namespace MAQUETTE
+           boost::container::static_vector<OrderBook, Limits::MaxInstrs>;
+     OrderBooksVec*            m_orderBooks;
+
++    // For each OrderBook, we may keep the corresp "ProtoSubscrInfo"  in order
++    // to be able to UnSubscribe or ReSubscribe the corresp Instrument  (norm-
++    // aly for TCP only).  We can use std::map here because these data are not
++    // used at high frequency; the key can be eg SecID, or SecDef ptr, or Ord-
++    // erBok ptr (we use the latter).   "ProtoSubscrInfo" cannot be stored in
++    // the OrderBook itself because the latter can be shared between multiple
++    // MDCs (Primary and Secondaries):
++    std::map<OrderBook*, ProtoSubscrInfo>
++                              m_protoSubscrInfos;
++
+     // Max OrderBooks Logical Depth to be maintained (0 for +oo):
+     int                       m_mktDepth;
+
+@@ -218,7 +260,8 @@ namespace MAQUETTE
+       return (m_orders != nullptr);
+     }
+
+-    // Is this MDC a Primary one?
++    // Is this MDC a Primary one? -- This happens iff there is no another
++    // "primary" MDC:
+     bool IsPrimaryMDC() const
+       { return (m_primaryMDC == nullptr || m_primaryMDC == this); }
+

@@ -1,0 +1,100 @@
+diff --git a/UHFT/Connectors/OrderBook.h b/UHFT/Connectors/OrderBook.h
+index 101b75fa..f5fba57b 100644
+--- a/UHFT/Connectors/OrderBook.h
++++ b/UHFT/Connectors/OrderBook.h
+@@ -50,26 +50,26 @@ namespace MAQUETTE
+     };
+
+     //-----------------------------------------------------------------------//
+-    // "SubscrInfo":                                                         //
++    // "StratSubscrInfo":                                                    //
+     //-----------------------------------------------------------------------//
+     // Descriptor for a Strategy subscribed to receive updates from this Order-
+     // Book (as well as Trades) on the corresp Symbol. "MinCBLevel" is to igno-
+     // re "weak" effects (see above):
+     //
+-    struct SubscrInfo
++    struct StratSubscrInfo
+     {
+       // Data Flds:
+       Strategy*       m_strategy;             // StrategyPtr NOT owned
+       UpdateEffectT   m_minCBLevel;           // Filter for CB
+
+       // Default Ctor:
+-      SubscrInfo()
++      StratSubscrInfo()
+       : m_strategy    (nullptr),
+         m_minCBLevel  (UpdateEffectT::NONE)   // Placeholder only
+       {}
+
+       // Non-Default Ctor:
+-      SubscrInfo
++      StratSubscrInfo
+       (
+         Strategy*     a_strategy,
+         UpdateEffectT a_min_cb_level
+@@ -162,16 +162,6 @@ namespace MAQUETTE
+     EConnector_MktData const* m_mdc;              // Ptr NOT owned
+     SecDefD const*            m_instr;            // Ptr NOT owned
+
+-    // Protocol-level action which is required  to subscribe MktData  for  this
+-    // Book; returns "m_protoSubscrID"; may be empty; "m_isProtoSubscrd" is set
+-    // if the Action was successfully invoked and subscription is currently ac-
+-    // tive; this flag is required because in some rare cases, "m_protoSubscrID"
+-    // may remain 0 in that case:
+-    //
+-    std::function<OrderID()>  m_subscrProtoAction;
+-    mutable bool              m_isProtoSubscrd;   // Subscr active at Proto lvl
+-    mutable OrderID           m_protoSubscrID;    // May be 0 even if subscrd
+-
+     // WithSeqNums and WithRptSeqs are flags indicating whether SeqNums (global)
+     // and RptSeqs (per-instr), resp, are used; XXX they should actually be tem-
+     // plate params, but this would complicate all APIs using the "OrderBook" --
+@@ -210,13 +200,18 @@ namespace MAQUETTE
+     mutable bool              m_lastUpdatedBid;
+
+     //-----------------------------------------------------------------------//
+-    // Subscription Data:                                                    //
++    // Strategies Subscription Data:                                         //
+     //-----------------------------------------------------------------------//
+     // Strategies subscribed to receive updates from this OrderBook (and/or
+     // Trades with the same Symbol):
+-    using SubscrInfosVec =
+-          boost::container::static_vector<SubscrInfo, Limits::MaxStrats>;
+-    SubscrInfosVec          m_subscrs;
++    using StratSubscrInfosVec =
++          boost::container::static_vector<StratSubscrInfo, Limits::MaxStrats>;
++    StratSubscrInfosVec       m_subscrs;
++
++    // NB: This is NOT to be confused with Protocol-Level Subscription Info
++    // which is maintained at the MDC level    (because an OrderBook can be
++    // shared between Primary / Secondary MDCs, and each of them would have
++    // its own ProtoSubscrInfo)...
+
+   public:
+     //=======================================================================//
+@@ -354,19 +349,19 @@ namespace MAQUETTE
+     //-----------------------------------------------------------------------//
+     // Meta-Data:                                                            //
+     //-----------------------------------------------------------------------//
+-    EConnector_MktData const& GetMDC  () const { return *m_mdc;      }
+-    SecDefD const&            GetInstr() const { return *m_instr;    }
++    EConnector_MktData  const& GetMDC  ()   const { return *m_mdc;      }
++    SecDefD const&             GetInstr()   const { return *m_instr;    }
+
+     //-----------------------------------------------------------------------//
+     // Subscription Info:                                                    //
+     //-----------------------------------------------------------------------//
+-    SubscrInfosVec const& GetSubscrs()   const { return m_subscrs;   }
++    StratSubscrInfosVec const& GetSubscrs() const { return m_subscrs;   }
+
+     //-----------------------------------------------------------------------//
+     // "SeqNum" management:                                                  //
+     //-----------------------------------------------------------------------//
+-    SeqNum GetLastUpdateRptSeq()         const { return m_lastUpdateRptSeq; }
+-    SeqNum GetLastUpdateSeqNum()         const { return m_lastUpdateSeqNum; }
++    SeqNum GetLastUpdateRptSeq() const     { return m_lastUpdateRptSeq; }
++    SeqNum GetLastUpdateSeqNum() const     { return m_lastUpdateSeqNum; }
+
+     //=======================================================================//
+     // Consistency Checking and Restoration:                                 //

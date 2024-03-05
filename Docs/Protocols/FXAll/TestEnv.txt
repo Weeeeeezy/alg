@@ -1,0 +1,12 @@
+Test ENV Conneciton details as below:
+
+IP Address: 75.98.57.176
+
+SenderCompId: ALPHA-PRC-1
+TargetCompId: FXALL
+Port: 10707(SSL)/18337(clear)
+
+SenderCompId: ALPHA-TRD-1
+TargetCompId: FXALL
+Port: 10708(SSL)/18338(clear)
+

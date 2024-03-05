@@ -1,0 +1,8 @@
+Cumberland FIX
+
+Idiosyncrasies for NewOrderSingle (FIX message type D)
+- Don't include Symbol (55)
+- OrderQty (38) is not required, but may be supplied. It must be less or equal
+  to the quantity specified in the QuoteRequest
+- Need to include QuoteID (117) and QuoteVersion (20000)
+- Don't include TransactTime (60)

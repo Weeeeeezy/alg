@@ -1,0 +1,206 @@
+diff --git a/3rdParty/xxHash/xxhash.c b/3rdParty/xxHash/xxhash.c
+index 0e73527..6ff785e 100644
+--- a/3rdParty/xxHash/xxhash.c
++++ b/3rdParty/xxHash/xxhash.c
+@@ -306,41 +306,41 @@ XXH32_finalize(U32 h32, const void* ptr, size_t len,
+ 
+     switch(len&15)  /* or switch(bEnd - p) */
+     {
+-      case 12:      PROCESS4;
++      case 12:      PROCESS4
+                     /* fallthrough */
+-      case 8:       PROCESS4;
++      case 8:       PROCESS4
+                     /* fallthrough */
+-      case 4:       PROCESS4;
++      case 4:       PROCESS4
+                     return XXH32_avalanche(h32);
+ 
+-      case 13:      PROCESS4;
++      case 13:      PROCESS4
+                     /* fallthrough */
+-      case 9:       PROCESS4;
++      case 9:       PROCESS4
+                     /* fallthrough */
+-      case 5:       PROCESS4;
+-                    PROCESS1;
++      case 5:       PROCESS4
++                    PROCESS1
+                     return XXH32_avalanche(h32);
+ 
+-      case 14:      PROCESS4;
++      case 14:      PROCESS4
+                     /* fallthrough */
+-      case 10:      PROCESS4;
++      case 10:      PROCESS4
+                     /* fallthrough */
+-      case 6:       PROCESS4;
+-                    PROCESS1;
+-                    PROCESS1;
++      case 6:       PROCESS4
++                    PROCESS1
++                    PROCESS1
+                     return XXH32_avalanche(h32);
+ 
+-      case 15:      PROCESS4;
++      case 15:      PROCESS4
+                     /* fallthrough */
+-      case 11:      PROCESS4;
++      case 11:      PROCESS4
+                     /* fallthrough */
+-      case 7:       PROCESS4;
++      case 7:       PROCESS4
+                     /* fallthrough */
+-      case 3:       PROCESS1;
++      case 3:       PROCESS1
+                     /* fallthrough */
+-      case 2:       PROCESS1;
++      case 2:       PROCESS1
+                     /* fallthrough */
+-      case 1:       PROCESS1;
++      case 1:       PROCESS1
+                     /* fallthrough */
+       case 0:       return XXH32_avalanche(h32);
+     }
+@@ -564,7 +564,7 @@ XXH_PUBLIC_API unsigned int XXH32_digest (const XXH32_state_t* state_in)
+ 
+ XXH_PUBLIC_API void XXH32_canonicalFromHash(XXH32_canonical_t* dst, XXH32_hash_t hash)
+ {
+-    XXH_STATIC_ASSERT(sizeof(XXH32_canonical_t) == sizeof(XXH32_hash_t));
++    XXH_STATIC_ASSERT(sizeof(XXH32_canonical_t) == sizeof(XXH32_hash_t))
+     if (XXH_CPU_LITTLE_ENDIAN) hash = XXH_swap32(hash);
+     memcpy(dst, &hash, sizeof(*dst));
+ }
+@@ -722,83 +722,83 @@ XXH64_finalize(U64 h64, const void* ptr, size_t len,
+ }
+ 
+     switch(len&31) {
+-      case 24: PROCESS8_64;
++      case 24: PROCESS8_64
+                     /* fallthrough */
+-      case 16: PROCESS8_64;
++      case 16: PROCESS8_64
+                     /* fallthrough */
+-      case  8: PROCESS8_64;
++      case  8: PROCESS8_64
+                return XXH64_avalanche(h64);
+ 
+-      case 28: PROCESS8_64;
++      case 28: PROCESS8_64
+                     /* fallthrough */
+-      case 20: PROCESS8_64;
++      case 20: PROCESS8_64
+                     /* fallthrough */
+-      case 12: PROCESS8_64;
++      case 12: PROCESS8_64
+                     /* fallthrough */
+-      case  4: PROCESS4_64;
++      case  4: PROCESS4_64
+                return XXH64_avalanche(h64);
+ 
+-      case 25: PROCESS8_64;
++      case 25: PROCESS8_64
+                     /* fallthrough */
+-      case 17: PROCESS8_64;
++      case 17: PROCESS8_64
+                     /* fallthrough */
+-      case  9: PROCESS8_64;
+-               PROCESS1_64;
++      case  9: PROCESS8_64
++               PROCESS1_64
+                return XXH64_avalanche(h64);
+ 
+-      case 29: PROCESS8_64;
++      case 29: PROCESS8_64
+                     /* fallthrough */
+-      case 21: PROCESS8_64;
++      case 21: PROCESS8_64
+                     /* fallthrough */
+-      case 13: PROCESS8_64;
++      case 13: PROCESS8_64
+                     /* fallthrough */
+-      case  5: PROCESS4_64;
+-               PROCESS1_64;
++      case  5: PROCESS4_64
++               PROCESS1_64
+                return XXH64_avalanche(h64);
+ 
+-      case 26: PROCESS8_64;
++      case 26: PROCESS8_64
+                     /* fallthrough */
+-      case 18: PROCESS8_64;
++      case 18: PROCESS8_64
+                     /* fallthrough */
+-      case 10: PROCESS8_64;
+-               PROCESS1_64;
+-               PROCESS1_64;
++      case 10: PROCESS8_64
++               PROCESS1_64
++               PROCESS1_64
+                return XXH64_avalanche(h64);
+ 
+-      case 30: PROCESS8_64;
++      case 30: PROCESS8_64
+                     /* fallthrough */
+-      case 22: PROCESS8_64;
++      case 22: PROCESS8_64
+                     /* fallthrough */
+-      case 14: PROCESS8_64;
++      case 14: PROCESS8_64
+                     /* fallthrough */
+-      case  6: PROCESS4_64;
+-               PROCESS1_64;
+-               PROCESS1_64;
++      case  6: PROCESS4_64
++               PROCESS1_64
++               PROCESS1_64
+                return XXH64_avalanche(h64);
+ 
+-      case 27: PROCESS8_64;
++      case 27: PROCESS8_64
+                     /* fallthrough */
+-      case 19: PROCESS8_64;
++      case 19: PROCESS8_64
+                     /* fallthrough */
+-      case 11: PROCESS8_64;
+-               PROCESS1_64;
+-               PROCESS1_64;
+-               PROCESS1_64;
++      case 11: PROCESS8_64
++               PROCESS1_64
++               PROCESS1_64
++               PROCESS1_64
+                return XXH64_avalanche(h64);
+ 
+-      case 31: PROCESS8_64;
++      case 31: PROCESS8_64
+                     /* fallthrough */
+-      case 23: PROCESS8_64;
++      case 23: PROCESS8_64
+                     /* fallthrough */
+-      case 15: PROCESS8_64;
++      case 15: PROCESS8_64
+                     /* fallthrough */
+-      case  7: PROCESS4_64;
++      case  7: PROCESS4_64
+                     /* fallthrough */
+-      case  3: PROCESS1_64;
++      case  3: PROCESS1_64
+                     /* fallthrough */
+-      case  2: PROCESS1_64;
++      case  2: PROCESS1_64
+                     /* fallthrough */
+-      case  1: PROCESS1_64;
++      case  1: PROCESS1_64
+                     /* fallthrough */
+       case  0: return XXH64_avalanche(h64);
+     }
+@@ -1017,7 +1017,7 @@ XXH_PUBLIC_API unsigned long long XXH64_digest (const XXH64_state_t* state_in)
+ 
+ XXH_PUBLIC_API void XXH64_canonicalFromHash(XXH64_canonical_t* dst, XXH64_hash_t hash)
+ {
+-    XXH_STATIC_ASSERT(sizeof(XXH64_canonical_t) == sizeof(XXH64_hash_t));
++    XXH_STATIC_ASSERT(sizeof(XXH64_canonical_t) == sizeof(XXH64_hash_t))
+     if (XXH_CPU_LITTLE_ENDIAN) hash = XXH_swap64(hash);
+     memcpy(dst, &hash, sizeof(*dst));
+ }

@@ -1,0 +1,56 @@
+# vim:ts=2:et
+
+SET(MQT_TOOLS
+  ManualTrading.cpp
+  PrintOrdStatus.cpp
+)
+IF (WITH_HDF5)
+  LIST(APPEND MQT_TOOLS
+    TradeAnalyzer.cpp)
+ENDIF()
+
+IF (NOT CRYPTO_ONLY)
+  LIST(APPEND MQT_TOOLS
+    MkSecDefs_MICEX.cpp
+    MkSecDefs_FORTS.cpp
+    TradePxsVWAP.cpp
+    StatsMDC.cpp
+    OptExecProfilePost.cpp
+    MkHistDataBin_HotSpotFX.cpp
+    LatencyTest.cpp
+  )
+  IF (WITH_RAPIDJSON)
+    LIST(APPEND MQT_TOOLS
+      LARisKa.cpp)
+  ENDIF()
+
+  # XXX: WHY?? Special Compilation Options: OpenMP (but NOT for CLang yet):
+  IF (NOT "${TOOL_CHAIN}" STREQUAL "CLang")
+    SET(OptExecProfilePost_EXTRA_COMPILE_OPTIONS "-fopenmp")
+    SET(OptExecProfilePost_EXTRA_LINK_LIBS       "gomp")
+  ENDIF()
+ENDIF()
+
+FOREACH(TOOL_SRC ${MQT_TOOLS})
+  GET_FILENAME_COMPONENT( TOOL  ${TOOL_SRC} NAME_WE)
+  ADD_EXECUTABLE       (${TOOL} ${TOOL_SRC})
+  SET_TARGET_PROPERTIES(${TOOL} PROPERTIES OUTPUT_NAME ${TOOL})
+  TARGET_LINK_LIBRARIES(${TOOL} MAQUETTE)
+
+  IF (${TOOL}_EXTRA_COMPILE_OPTIONS)
+    TARGET_COMPILE_OPTIONS(${TOOL} PRIVATE ${${TOOL}_EXTRA_COMPILE_OPTIONS})
+  ENDIF()
+  IF (${TOOL}_EXTRA_LINK_OPTIONS)
+    TARGET_LINK_OPTIONS(   ${TOOL} PRIVATE ${${TOOL}_EXTRA_LINK_OPTIONS})
+  ENDIF()
+  IF (${TOOL}_EXTRA_LINK_LIBS)
+    TARGET_LINK_LIBRARIES( ${TOOL} ${${TOOL}_EXTRA_LINK_LIBS})
+  ENDIF()
+ENDFOREACH(TOOL_SRC)
+
+IF (WITH_HDF5)
+  TARGET_LINK_LIBRARIES(TradeAnalyzer ${BLS_STRAT_LIB})
+
+  # NB: All MDRecorders currently required HDF5 support!
+  ADD_SUBDIRECTORY(MDRecorders)
+ENDIF()
